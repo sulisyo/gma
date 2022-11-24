@@ -71,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
     String result;
     try {
       final String resultFromNative = await platform
-          .invokeMethod('getResult', <String, String>{'from': 'fluttermuk'});
+          .invokeMethod('getResult', <String, String>{'from': 'flutter'});
       result = resultFromNative;
     } on PlatformException catch (e) {
       result = "error: '${e.message}'.";
