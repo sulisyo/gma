@@ -1,8 +1,5 @@
-# getx_state_management
+# Provider_state_management
 
-A new Flutter project to explain Getx State Management and its Features.
+A new Flutter project to explain Provider ported from Getx State Management and its Features.
+For Navigation still using get
 
-## Getting Started
-
-You can preview the application through this web link.
-https://getx-counter.web.app/#/
