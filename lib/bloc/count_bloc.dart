@@ -1,48 +1,66 @@
+import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getx_state_management/constants/color_constants.dart';
+import 'package:injectable/injectable.dart';
 
-class CountController extends GetxController {
-  /// You do not need that. I recommend using it just for ease of syntax.
-  /// with static method: Controller.to.increment();
-  /// with no static method: Get.find<Controller>().increment();
-  /// There is no difference in performance, nor any side effect of using either
-  /// syntax. Only one does not need the type,
-  /// and the other the IDE will autocomplete it.
-  static CountController get to => Get.find();
-  var obxCount = 0.obs;
-  int simpleCount = 0;
+part 'count_event.dart';
+part 'count_state.dart';
 
-  void increment() {
-    obxCount.value++;
-    if (obxCount.value >= 1 && obxCount.value <= 1) {
+@Singleton()
+class CountBloc extends Bloc<CountEvent, CountState> {
+  CountBloc(): super( const CountState(number: 0)){
+    on<CountEvent>(_count);
+  }
+  int _obxCount = 0;
+
+  void _count(
+      CountEvent event, Emitter<CountState> emit) async {
+    try {
+      if(event.counter == Counter.increment){
+        _increment();
+      }else{
+        _decrement();
+      }
+      emit(
+        CountState(
+          number: _obxCount
+        ),
+      );
+    } catch (error) {
+
+    }
+  }
+  void _increment() {
+    _obxCount++;
+    if (_obxCount >= 1 && _obxCount <= 1) {
       Get.snackbar(
         'Incremented',
-        'Count incremented to ${obxCount.value.toString()}',
+        'Count incremented to ${_obxCount.toString()}',
         snackPosition: SnackPosition.BOTTOM,
         duration: const Duration(seconds: 1),
       );
-    } else if (obxCount.value % 2 == 0) {
-      Get.snackbar('Even Count', 'Even number is ${obxCount.value.toString()}',
+    } else if (_obxCount % 2 == 0) {
+      Get.snackbar('Even Count', 'Even number is ${_obxCount.toString()}',
           snackPosition: SnackPosition.BOTTOM,
           duration: const Duration(seconds: 1));
-    } else if (obxCount.value % 5 == 0) {
+    } else if (_obxCount % 5 == 0) {
       Get.bottomSheet(Container(
         height: 150,
         color: AppColors.spaceBlue,
         child: Center(
             child: Text(
-          'Count has reached ${obxCount.value.toString()}',
+          'Count has reached ${_obxCount.toString()}',
           style: const TextStyle(fontSize: 28.0, color: Colors.white),
         )),
       ));
     }
   }
 
-  void decrement() {
-    obxCount.value--;
-    if (obxCount.value <= 0) {
-      obxCount.value = 0;
+  void _decrement() {
+    _obxCount--;
+    if (_obxCount <= 0) {
+      _obxCount = 0;
       Get.defaultDialog(
         radius: 10.0,
         contentPadding: const EdgeInsets.all(20.0),
@@ -64,13 +82,11 @@ class CountController extends GetxController {
     }
   }
 
-  void simpleDecrement() {
-    simpleCount--;
-    update();
-  }
-
-  void simpleIncrement() {
-    simpleCount++;
-    update();
-  }
+  // void simpleDecrement() {
+  //   simpleCount--;
+  // }
+  //
+  // void simpleIncrement() {
+  //   simpleCount++;
+  // }
 }

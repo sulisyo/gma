@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_it/get_it.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:getx_state_management/constants/theme.dart';
-import 'package:getx_state_management/controllers/theme_controller.dart';
+import 'package:getx_state_management/bloc/theme_controller.dart';
+import 'package:getx_state_management/di/injection.dart';
 import 'package:getx_state_management/presentation/home_page.dart';
+import 'package:injectable/injectable.dart';
+
+
 
 void main() async {
   await GetStorage.init();
+  await configureDependencies();
   runApp(MyApp());
 }
 

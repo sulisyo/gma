@@ -36,7 +36,12 @@ dependencies:
   cupertino_icons: ^1.0.2
   get: ^4.6.1
   get_storage: ^2.0.3
-
+  bloc:
+  get_it: ^7.2.0
+  injectable: ^1.5.0
+  equatable: ^2.0.3
+  injectable_generator:
+  build_runner:
 dev_dependencies:
   flutter_test:
     sdk: flutter

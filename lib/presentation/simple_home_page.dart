@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_it/get_it.dart';
 import 'package:getx_state_management/constants/theme.dart';
-import 'package:getx_state_management/controllers/count_controller.dart';
-import 'package:getx_state_management/controllers/theme_controller.dart';
-import 'package:getx_state_management/controllers/user_controller.dart';
+import 'package:getx_state_management/bloc/count_bloc.dart';
+import 'package:getx_state_management/bloc/theme_controller.dart';
 import 'package:getx_state_management/presentation/user_page.dart';
 
 class SimpleHomePage extends StatelessWidget {
   SimpleHomePage({Key? key}) : super(key: key);
-  final themeController = Get.find<ThemeController>();
-  final CountController controller = Get.put(CountController());
+  final themeController = GetIt.I<ThemeController>();
+  final CountBloc controller = GetIt.I<CountBloc>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,14 +44,15 @@ class SimpleHomePage extends StatelessWidget {
             const SizedBox(
               height: 40.0,
             ),
-            GetBuilder<CountController>(
-                //init: CountController(),
-                builder: (counter) {
-              return Text(
-                counter.simpleCount.toString(),
-                style: const TextStyle(fontSize: 38),
-              );
-            }),
+            StreamBuilder<CountState>(
+              stream: controller.stream,
+                builder: (context, snapShot){
+                  return Text(
+                    '${snapShot.data?.number.toString()}',
+                    style: const TextStyle(fontSize: 38),
+                  );
+                }
+            ),
             const SizedBox(
               height: 40.0,
             ),
@@ -62,7 +63,7 @@ class SimpleHomePage extends StatelessWidget {
                   child: const Icon(Icons.remove),
                   onPressed: () {
                     //CountController.to.simpleIncrement();
-                    controller.simpleDecrement();
+                    controller.add(const CountEvent(counter: Counter.decrement));
                   },
                   tooltip: 'decrement',
                 ),
@@ -70,7 +71,7 @@ class SimpleHomePage extends StatelessWidget {
                   child: const Icon(Icons.add),
                   onPressed: () {
                     //CountController.to.simpleDecrement();
-                    controller.simpleIncrement();
+                    controller.add(const CountEvent(counter: Counter.increment));
                   },
                   tooltip: 'increment',
                 ),

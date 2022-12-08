@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_it/get_it.dart';
 import 'package:getx_state_management/constants/theme.dart';
-import 'package:getx_state_management/controllers/count_controller.dart';
-import 'package:getx_state_management/controllers/theme_controller.dart';
+import 'package:getx_state_management/bloc/count_bloc.dart';
+import 'package:getx_state_management/bloc/theme_controller.dart';
 import 'package:getx_state_management/presentation/simple_home_page.dart';
 import 'package:getx_state_management/presentation/user_page.dart';
 
@@ -10,11 +13,13 @@ class HomePage extends StatelessWidget {
   HomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
-  final themeController = Get.find<ThemeController>();
-  final CountController countController = Get.put(CountController());
+  final themeController = GetIt.I<ThemeController>();
+  final CountBloc countController = GetIt.I<CountBloc>();
 
   @override
   Widget build(BuildContext context) {
+    //StreamSubscription subscription;
+    //subscription = countController.stream.listen((state){});
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
@@ -46,11 +51,14 @@ class HomePage extends StatelessWidget {
             const SizedBox(
               height: 40.0,
             ),
-            Obx(
-              () => Text(
-                '${countController.obxCount}',
-                style: const TextStyle(fontSize: 48.0),
-              ),
+            StreamBuilder<CountState>(
+              stream: countController.stream,
+              builder: (context, snapShot) {
+                return Text(
+                  '${snapShot.data?.number}',
+                  style: const TextStyle(fontSize: 48.0),
+                );
+              },
             ),
             const SizedBox(
               height: 40.0,
@@ -59,13 +67,15 @@ class HomePage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 FloatingActionButton.extended(
-                  onPressed: () => countController.decrement(),
+                  onPressed: () => countController
+                      .add(const CountEvent(counter: Counter.decrement)),
                   tooltip: 'simpleDecrement',
                   label: const Text('Decrement'),
                 ),
                 FloatingActionButton.extended(
                   onPressed: () {
-                    countController.increment();
+                    countController
+                        .add(const CountEvent(counter: Counter.increment));
                   },
                   tooltip: 'simpleIncrement',
                   label: const Text('Increment'),

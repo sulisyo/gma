@@ -1,6 +1,6 @@
 class User {
   String userName;
-  String userAge;
+  int userAge;
 
-  User({this.userName = '', this.userAge = ''});
+   User({required this.userName , required this.userAge});
 }
