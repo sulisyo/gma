@@ -6,6 +6,7 @@ import 'package:get_it/get_it.dart';
 import 'package:getx_state_management/constants/theme.dart';
 import 'package:getx_state_management/bloc/count_bloc.dart';
 import 'package:getx_state_management/bloc/theme_controller.dart';
+import 'package:getx_state_management/presentation/sdui_page.dart';
 import 'package:getx_state_management/presentation/simple_home_page.dart';
 import 'package:getx_state_management/presentation/user_page.dart';
 
@@ -95,6 +96,10 @@ class HomePage extends StatelessWidget {
             ElevatedButton(
               onPressed: () => Get.to(UserPage()),
               child: const Text('User Home Page'),
+            ),
+             ElevatedButton(
+              onPressed: () => Get.to(SduiPage()),
+              child: const Text('Sdui Page'),
             ),
           ],
         ),
