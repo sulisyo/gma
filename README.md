@@ -1,6 +1,6 @@
 # getx_state_management
 
-A new Flutter project to explain Getx State Management and its Features.
+A new Flutter project to explain Getx State Management and its Features. Sample using sdui for layout from json and custom sdui-widget
 
 ## Getting Started
 
